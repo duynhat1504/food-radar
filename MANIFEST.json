@@ -1,0 +1,114 @@
+{
+  "package": "FoodRadar current design documentation only",
+  "revision": "2026-11-12",
+  "adr_count": 9,
+  "validation": "Historical 16/16 offline contract tests from 2026-11-09; not rerun in this review",
+  "notes": "All nine ADRs reviewed and remain Proposed pending owner acceptance. Live Google, licensing, billing, UI and implementation evidence remain open.",
+  "files": [
+    {
+      "path": "README.md",
+      "size_bytes": 2835,
+      "sha256": "51c29e9928a3874986e0b56d1c8e07e83699e9513b87e698e0bd44ead4624584"
+    },
+    {
+      "path": "docs/adr/0001-modular-monolith.md",
+      "size_bytes": 8382,
+      "sha256": "74bc31ce655e16fe0c98cca6a9760a7cd66914d3a68ba0fb6840aab5ba9d23eb"
+    },
+    {
+      "path": "docs/adr/0002-layered-and-ports-adapters.md",
+      "size_bytes": 6696,
+      "sha256": "2bf83e5ceebe24b82cc8dae7c1d1d6f65a655cdacf526ede733aa5e93f1cb5ce"
+    },
+    {
+      "path": "docs/adr/0003-postgresql-primary-database.md",
+      "size_bytes": 7835,
+      "sha256": "fca0427e7f2695795b8b3de8c3da6dfe9f329d74cb5ae04e03674748aa1755b8"
+    },
+    {
+      "path": "docs/adr/0004-google-places-provider.md",
+      "size_bytes": 9285,
+      "sha256": "4a64ede91b992a1f8263181e06b05eff8012dc4e25cd1a88eb2b399675ca6980"
+    },
+    {
+      "path": "docs/adr/0005-recommendation-strategy.md",
+      "size_bytes": 7038,
+      "sha256": "e039a260ffda7daca51d3243dd30f16077d507ee89ef6f7cda94c492f341597f"
+    },
+    {
+      "path": "docs/adr/0006-sync-and-async-processing.md",
+      "size_bytes": 7375,
+      "sha256": "7a8ae1f43faf2078b9caf776694245f4df95a1b9c9468dacf803602f2ece388b"
+    },
+    {
+      "path": "docs/adr/0007-redis-caching.md",
+      "size_bytes": 7017,
+      "sha256": "1996219bf2946c377add3eedd4a773b43ce6e7bd9bf8906ea41d70b9b14414c3"
+    },
+    {
+      "path": "docs/adr/0008-rule-based-before-ai.md",
+      "size_bytes": 9995,
+      "sha256": "99caac879d662b9757f607cbb7a0f0fe02fd5843fb20b46e709b5cf0985d6cf4"
+    },
+    {
+      "path": "docs/adr/0009-candidate-retrieval.md",
+      "size_bytes": 6572,
+      "sha256": "fce90bbd467a29801aec5cc62b5a6bf4934e8c396832070eccb06c7dba9bc67b"
+    },
+    {
+      "path": "docs/adr/README.md",
+      "size_bytes": 10165,
+      "sha256": "047f4614ed638d67a896e2b53d1da2861eedc8143dd380e8ee62a6e6612f67fb"
+    },
+    {
+      "path": "docs/architecture-overview.md",
+      "size_bytes": 4345,
+      "sha256": "9255bf3dd85487821b441013947b72dcbbf9d3b0cbbd5c19b523dee7584002a5"
+    },
+    {
+      "path": "docs/data-and-privacy.md",
+      "size_bytes": 4287,
+      "sha256": "3dc05c5854beb9b3915aabfde2f9fd7721f02902a69e61f58ae9b78e09df47e4"
+    },
+    {
+      "path": "docs/google-places-setup-and-cost.md",
+      "size_bytes": 3062,
+      "sha256": "0cb01d6d741800c5011912cce196f6b1f2fa03c02bb7e93042e05ea454485949"
+    },
+    {
+      "path": "docs/openapi.yaml",
+      "size_bytes": 27693,
+      "sha256": "f4c8aa4bd1e83b31075c686cb70db9bff129b3fc95958d36f8f457c5a459cea6"
+    },
+    {
+      "path": "docs/phase0-validation.md",
+      "size_bytes": 1368,
+      "sha256": "634deecb46aec74c2d0b5b148bbdc93c9f0728c90f304708ccecb45a794ea141"
+    },
+    {
+      "path": "docs/product-requirements.md",
+      "size_bytes": 12045,
+      "sha256": "20eef804ffbafe3d84c265fef34e3956aed524c127c753eb3bef662081d320c8"
+    },
+    {
+      "path": "docs/recommendation-evaluation.md",
+      "size_bytes": 2010,
+      "sha256": "9fbcde1595b5b02270a52593e4a495cd852f5a54bad906c077124cc380384137"
+    },
+    {
+      "path": "docs/release-readiness.md",
+      "size_bytes": 3555,
+      "sha256": "4df25860e4134c7997083b0406e291df7369b9968c7f19d19a3fc0835519f38f"
+    },
+    {
+      "path": "scripts/google-places-smoke.ps1",
+      "size_bytes": 3375,
+      "sha256": "e7a9a26c42bac13003f79ebdab2b852b1b1a40a2ca89cc580719d3162f5972d0"
+    },
+    {
+      "path": "tests/validate_contract.py",
+      "size_bytes": 8364,
+      "sha256": "6de80443250aef3b3122a9503164d95d964fc2f10b5b7fc9e55cc3148d70945c"
+    }
+  ]
+}

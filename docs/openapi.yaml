@@ -1,0 +1,908 @@
+openapi: 3.0.3
+info:
+  title: FoodRadar API
+  version: 1.0.0-proposed
+  description: FoodRadar MVP API v1 Proposed 2026-11-12. GOOGLE_DISCOVERY preserves Google results; OWNED_DATA permits scoring
+    only on legitimately owned/licensed data. No implementation or licensing approval is claimed.
+servers:
+- url: http://localhost:8081
+  description: Local development; public base URL configured at deployment
+tags:
+- name: Auth
+- name: Profile
+- name: Places
+- name: Favorites
+paths:
+  /api/v1/auth/register:
+    post:
+      tags:
+      - Auth
+      operationId: register
+      summary: Register account
+      security:
+      - {}
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+      responses:
+        '201':
+          description: Registered, do not log in automatically
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfile'
+        '400': &id001
+          $ref: '#/components/responses/BadRequest'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+  /api/v1/auth/login:
+    post:
+      tags:
+      - Auth
+      operationId: login
+      summary: Log in; set refresh/csrf cookies
+      description: Access token in response; rotating opaque refresh cookie HttpOnly Secure SameSite; JS-readable csrf cookie.
+        Never return refresh token in JSON.
+      security:
+      - {}
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Access token + cookies
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccessTokenResponse'
+        '400': *id001
+        '401': &id002
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+  /api/v1/auth/refresh:
+    post:
+      tags:
+      - Auth
+      operationId: refreshSession
+      summary: Rotate refresh token and issue access token
+      description: One-time refresh rotation, detect replay and revoke affected session.
+      security:
+      - refreshCookie: []
+      parameters: &id003
+      - name: X-CSRF-Token
+        in: header
+        required: true
+        description: Double-submit csrf cookie + Origin check.
+        schema:
+          type: string
+          minLength: 16
+      responses:
+        '200':
+          description: New access token; rotated refresh/csrf cookies
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccessTokenResponse'
+        '401': *id002
+        '403':
+          description: CSRF/Origin check failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+  /api/v1/auth/logout:
+    post:
+      tags:
+      - Auth
+      operationId: logout
+      summary: Revoke refresh session and clear cookies
+      description: No request body. Logout is server-side refresh session revocation.
+      security:
+      - refreshCookie: []
+      parameters: *id003
+      responses:
+        '204':
+          description: Cookie cleared; refresh session revoked
+        '401': *id002
+        '403':
+          description: CSRF/Origin check failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/v1/users/me:
+    get:
+      tags:
+      - Profile
+      operationId: getMe
+      summary: Current authenticated user
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Current user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfile'
+        '401': *id002
+    delete:
+      tags:
+      - Profile
+      operationId: deleteMe
+      summary: Delete own account and personal data
+      description: 'MVP: delete user profile, preferences, favorites, refresh sessions; any retained technical backups follow
+        public retention policy.'
+      security:
+      - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeleteAccountRequest'
+      responses:
+        '204':
+          description: Account deletion scheduled/completed according to documented retention and backup policy; use explicit
+            implementation semantics before release
+        '400': *id001
+        '401': *id002
+  /api/v1/users/me/preferences:
+    get:
+      tags:
+      - Profile
+      operationId: getPreferences
+      summary: Get preferences
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Preference data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserPreferences'
+        '401': *id002
+    put:
+      tags:
+      - Profile
+      operationId: putPreferences
+      summary: Replace preferences
+      security:
+      - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserPreferences'
+      responses:
+        '200':
+          description: Updated preferences
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserPreferences'
+        '400': *id001
+        '401': *id002
+  /api/v1/places/search:
+    post:
+      tags:
+      - Places
+      operationId: searchPlaces
+      summary: Tìm địa điểm theo nguồn; giữ thứ tự Google hoặc tính ranking trên dữ liệu sở hữu
+      description: 'GOOGLE_DISCOVERY: max 1 Google Search call (Nearby when blank query, Text when nonblank); provider order,
+        no derived scores/distance, Text radius is bias only and an explicit location in query can override that bias.
+        OWNED_DATA: strict radius & validated ranking on owned/licensed data. 422 for unsupported combinations. No
+        automatic retry of provider search in MVP; no guarantee of full geographic coverage.'
+      security:
+      - {}
+      - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchRequest'
+            examples:
+              googleNearby:
+                value:
+                  latitude: 10.7769
+                  longitude: 106.7009
+                  radiusMeters: 1500
+                  sourceMode: GOOGLE_DISCOVERY
+                  placeType: restaurant
+                  rankingMode: PROVIDER_ORDER
+              googleText:
+                value:
+                  latitude: 10.7769
+                  longitude: 106.7009
+                  radiusMeters: 2000
+                  sourceMode: GOOGLE_DISCOVERY
+                  query: phở
+                  rankingMode: PROVIDER_ORDER
+              ownedRanking:
+                value:
+                  latitude: 10.7769
+                  longitude: 106.7009
+                  radiusMeters: 2000
+                  sourceMode: OWNED_DATA
+                  minRating: 4.3
+                  rankingMode: RELEVANCE
+      responses:
+        '200':
+          description: Kết quả trong candidate retrieved, không exhaustive. Google Text không bảo đảm tất cả trong bán kính.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchResponse'
+              example:
+                requestId: 2c17262d-2e59-438a-9435-781c2e70e019
+                sourceMode: GOOGLE_DISCOVERY
+                retrievalMode: GOOGLE_TEXT
+                rankingMode: PROVIDER_ORDER
+                scoreVersion: null
+                radiusPolicy: PROVIDER_BIAS_ONLY
+                isRadiusStrict: false
+                isExhaustive: false
+                candidateCount: 1
+                coverageNotice: Text Search ưu tiên vị trí, có thể trả quán ngoài bán kính; không phải danh sách đầy đủ.
+                providerAttribution:
+                  googleLogoRequired: true
+                  googleMapRequiredIfMapped: true
+                  thirdPartyAttributionsRequired: true
+                results:
+                - provider: GOOGLE_PLACES
+                  providerPlaceId: example-id
+                  displayName: Địa điểm minh họa (API example, không phải kết quả live)
+                  googleMapsUri: https://maps.google.com/
+                  attributions: []
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '502':
+          $ref: '#/components/responses/ProviderError'
+        '503':
+          $ref: '#/components/responses/Unavailable'
+        '504':
+          $ref: '#/components/responses/ProviderTimeout'
+        '422':
+          $ref: '#/components/responses/Unprocessable'
+  /api/v1/places/{provider}/{placeId}:
+    get:
+      tags:
+      - Places
+      operationId: getPlaceDetails
+      summary: Lấy thông tin chi tiết hiện hành của một quán
+      description: Read-through per user interaction. For Google no place payload persistence; attribution/branding required.
+        Owned uses own licensed database. 404 if ref cannot be resolved.
+      security:
+      - {}
+      - bearerAuth: []
+      parameters:
+      - $ref: '#/components/parameters/Provider'
+      - $ref: '#/components/parameters/PlaceId'
+      responses:
+        '200':
+          description: Thông tin hiện hành; trường không có dữ liệu có thể null.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlaceDetails'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '502':
+          $ref: '#/components/responses/ProviderError'
+        '503':
+          $ref: '#/components/responses/Unavailable'
+        '504':
+          $ref: '#/components/responses/ProviderTimeout'
+  /api/v1/favorites:
+    get:
+      tags:
+      - Favorites
+      operationId: listFavorites
+      summary: Liệt kê tham chiếu quán đã lưu của tài khoản
+      description: Chỉ trả Place ID và thời điểm lưu; client gọi chi tiết khi cần dữ liệu quán mới. Only opaque (provider,providerPlaceId)
+        ref is persisted; never persist Google displayName/rating/coordinates.
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Danh sách tham chiếu theo thời gian lưu giảm dần.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Favorite'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      tags:
+      - Favorites
+      operationId: addFavorite
+      summary: Lưu một tham chiếu quán
+      description: Cặp provider/sourceId phải duy nhất theo user. Gọi lặp với cùng cặp trả 409; client có thể GET favorites
+        để lấy bản ghi hiện có. Only opaque (provider,providerPlaceId) ref is persisted; never persist Google displayName/rating/coordinates.
+      security:
+      - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PlaceReference'
+      responses:
+        '201':
+          description: Đã lưu.
+          headers:
+            Location:
+              description: Đường dẫn bản ghi mới.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Favorite'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '409':
+          $ref: '#/components/responses/Conflict'
+  /api/v1/favorites/{favoriteId}:
+    delete:
+      tags:
+      - Favorites
+      operationId: deleteFavorite
+      summary: Bỏ lưu một quán thuộc tài khoản
+      description: Chỉ chủ sở hữu được xóa; bản ghi không tồn tại trả 404.
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: favoriteId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '204':
+          description: Đã xóa.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Đề xuất; cơ chế cấp token cụ thể sẽ được chốt cùng module identity.
+    refreshCookie:
+      type: apiKey
+      in: cookie
+      name: fr_refresh
+      description: Opaque rotating refresh token in Secure HttpOnly SameSite cookie; accompanying X-CSRF-Token header mandatory
+        and Origin checked.
+  parameters:
+    Provider:
+      name: provider
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/Provider'
+    PlaceId:
+      name: placeId
+      in: path
+      required: true
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 255
+  schemas:
+    Provider:
+      type: string
+      enum:
+      - GOOGLE_PLACES
+      - FOODRADAR_OWNED
+    PlaceReference:
+      type: object
+      required:
+      - provider
+      - providerPlaceId
+      properties:
+        provider:
+          $ref: '#/components/schemas/Provider'
+        providerPlaceId:
+          type: string
+          minLength: 1
+          maxLength: 255
+          description: Opaque ID from provider. Google Place IDs may rotate; do not derive details from ID.
+    SearchRequest:
+      type: object
+      additionalProperties: false
+      required:
+      - latitude
+      - longitude
+      - radiusMeters
+      description: 'Cross-field validation: GOOGLE_DISCOVERY supports only PROVIDER_ORDER; query+placeType and strict open/rating/review
+        filters return 422. OWNED_DATA supports local strict filters and own ranking.'
+      properties:
+        latitude:
+          type: number
+          format: double
+          minimum: -90
+          maximum: 90
+        longitude:
+          type: number
+          format: double
+          minimum: -180
+          maximum: 180
+        radiusMeters:
+          type: integer
+          minimum: 100
+          maximum: 10000
+        sourceMode:
+          type: string
+          enum:
+          - GOOGLE_DISCOVERY
+          - OWNED_DATA
+          default: GOOGLE_DISCOVERY
+        query:
+          type: string
+          maxLength: 120
+          description: Trim; absent/blank => Nearby for Google; otherwise Text Search. Google query+placeType returns 422.
+            For Google Text, radius is a bias only and explicit locations in query may override it.
+        placeType:
+          type: string
+          enum:
+          - restaurant
+          - cafe
+          - bakery
+          description: Optional; for Google Nearby absent => restaurant; Google Text with query+placeType returns 422. Verify
+            Google type mapping in live PoC.
+        rankingMode:
+          type: string
+          enum:
+          - PROVIDER_ORDER
+          - RELEVANCE
+          - DISTANCE
+          - RATING
+          description: GOOGLE_DISCOVERY accepts PROVIDER_ORDER only; OWNED_DATA accepts RELEVANCE/DISTANCE/RATING. Defaults
+            per source.
+        openNow:
+          type: boolean
+          description: true only allowed for OWNED_DATA in MVP; Google true => 422.
+        minRating:
+          type: number
+          format: double
+          minimum: 1
+          maximum: 5
+          description: OWNED_DATA only; Google => 422, no minRating rounding/push-down.
+        minUserRatingCount:
+          type: integer
+          minimum: 0
+          description: OWNED_DATA only; Google => 422.
+    SearchResponse:
+      type: object
+      required:
+      - requestId
+      - sourceMode
+      - retrievalMode
+      - rankingMode
+      - radiusPolicy
+      - isRadiusStrict
+      - isExhaustive
+      - candidateCount
+      - coverageNotice
+      - results
+      properties:
+        requestId:
+          type: string
+          format: uuid
+        sourceMode:
+          type: string
+          enum:
+          - GOOGLE_DISCOVERY
+          - OWNED_DATA
+        retrievalMode:
+          type: string
+          enum:
+          - GOOGLE_NEARBY
+          - GOOGLE_TEXT
+          - OWNED_POSTGIS
+        rankingMode:
+          type: string
+          enum:
+          - PROVIDER_ORDER
+          - RELEVANCE
+          - DISTANCE
+          - RATING
+        scoreVersion:
+          type: string
+          nullable: true
+          description: Null/omitted for GOOGLE_DISCOVERY, versioned for OWNED_DATA strategies.
+        radiusPolicy:
+          type: string
+          enum:
+          - PROVIDER_CIRCLE_RESTRICTION
+          - PROVIDER_BIAS_ONLY
+          - FOODRADAR_ENFORCED
+        isRadiusStrict:
+          type: boolean
+          description: False for Google Text with locationBias; true for Google Nearby by provider circle restriction,
+            not by FoodRadar distance verification; true for Owned over indexed places.
+        isExhaustive:
+          type: boolean
+          description: Always false for Google. For owned, scope only owned dataset; public city-wide completeness is never
+            implied.
+        candidateCount:
+          type: integer
+          minimum: 0
+          description: Retrieved candidates, not number of all real businesses in region.
+        coverageNotice:
+          type: string
+        providerAttribution:
+          $ref: '#/components/schemas/ProviderAttribution'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/PlaceSearchResult'
+    Location:
+      type: object
+      required:
+      - latitude
+      - longitude
+      properties:
+        latitude:
+          type: number
+          format: double
+        longitude:
+          type: number
+          format: double
+    Attribution:
+      type: object
+      required:
+      - displayName
+      properties:
+        displayName:
+          type: string
+        uri:
+          type: string
+          format: uri
+    PlaceDetails:
+      allOf:
+      - $ref: '#/components/schemas/PlaceReference'
+      - type: object
+        required:
+        - displayName
+        - attributions
+        properties:
+          displayName:
+            type: string
+          formattedAddress:
+            type: string
+            nullable: true
+          location:
+            $ref: '#/components/schemas/Location'
+          googleRating:
+            type: number
+            format: double
+            nullable: true
+          userRatingCount:
+            type: integer
+            nullable: true
+          openNow:
+            type: boolean
+            nullable: true
+          googleMapsUri:
+            type: string
+            format: uri
+            nullable: true
+          attributions:
+            type: array
+            items:
+              $ref: '#/components/schemas/Attribution'
+    Favorite:
+      allOf:
+      - $ref: '#/components/schemas/PlaceReference'
+      - type: object
+        required:
+        - id
+        - createdAt
+        properties:
+          id:
+            type: string
+            format: uuid
+          createdAt:
+            type: string
+            format: date-time
+    Error:
+      type: object
+      required:
+      - code
+      - message
+      - requestId
+      properties:
+        code:
+          type: string
+          example: INVALID_RADIUS
+        message:
+          type: string
+        requestId:
+          type: string
+          format: uuid
+        fieldErrors:
+          type: array
+          items:
+            type: object
+            required:
+            - field
+            - message
+            properties:
+              field:
+                type: string
+              message:
+                type: string
+    ProviderAttribution:
+      type: object
+      properties:
+        googleLogoRequired:
+          type: boolean
+        googleMapRequiredIfMapped:
+          type: boolean
+        thirdPartyAttributionsRequired:
+          type: boolean
+    PlaceSearchResult:
+      allOf:
+      - $ref: '#/components/schemas/PlaceReference'
+      - type: object
+        required:
+        - displayName
+        - attributions
+        properties:
+          displayName:
+            type: string
+          location:
+            $ref: '#/components/schemas/Location'
+          distanceMeters:
+            type: integer
+            minimum: 0
+            nullable: true
+            description: Only OWNED_DATA, not computed from Google Places coordinates in MVP.
+          googleRating:
+            type: number
+            minimum: 1
+            maximum: 5
+            nullable: true
+            description: Provider data for display only, if approved FieldMask/SKU.
+          userRatingCount:
+            type: integer
+            minimum: 0
+            nullable: true
+          ownedRating:
+            type: number
+            minimum: 0
+            maximum: 5
+            nullable: true
+          foodRadarScore:
+            type: number
+            minimum: 0
+            maximum: 1
+            nullable: true
+            description: Only OWNED_DATA RELEVANCE.
+          confidence:
+            type: string
+            enum:
+            - LOW
+            - MEDIUM
+            - HIGH
+            nullable: true
+            description: Only OWNED_DATA, feature completeness.
+          unknownFields:
+            type: array
+            items:
+              type: string
+            description: OWNED_DATA only; optional.
+          reasons:
+            type: array
+            items:
+              type: string
+            description: OWNED_DATA only; never infer Google derived facts.
+          googleMapsUri:
+            type: string
+            format: uri
+            nullable: true
+          attributions:
+            type: array
+            items:
+              $ref: '#/components/schemas/Attribution'
+    RegisterRequest:
+      type: object
+      additionalProperties: false
+      required:
+      - email
+      - password
+      properties:
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        password:
+          type: string
+          minLength: 12
+          maxLength: 128
+    LoginRequest:
+      type: object
+      additionalProperties: false
+      required:
+      - email
+      - password
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+    AccessTokenResponse:
+      type: object
+      required:
+      - accessToken
+      - tokenType
+      - expiresInSeconds
+      properties:
+        accessToken:
+          type: string
+        tokenType:
+          type: string
+          enum:
+          - Bearer
+        expiresInSeconds:
+          type: integer
+          minimum: 1
+        user:
+          $ref: '#/components/schemas/UserProfile'
+      description: Login/refresh also sets fr_refresh HttpOnly Secure cookie and readable fr_csrf cookie; JS copies fr_csrf
+        into X-CSRF-Token for refresh/logout; enforce Origin check.
+    UserProfile:
+      type: object
+      required:
+      - id
+      - email
+      - createdAt
+      properties:
+        id:
+          type: string
+          format: uuid
+        email:
+          type: string
+          format: email
+        createdAt:
+          type: string
+          format: date-time
+    UserPreferences:
+      type: object
+      additionalProperties: false
+      properties:
+        favoriteCuisines:
+          type: array
+          uniqueItems: true
+          maxItems: 20
+          items:
+            type: string
+            maxLength: 40
+        dietaryPreferences:
+          type: array
+          uniqueItems: true
+          maxItems: 20
+          items:
+            type: string
+            maxLength: 40
+        maxBudgetVnd:
+          type: integer
+          minimum: 0
+          maximum: 10000000
+    DeleteAccountRequest:
+      type: object
+      required:
+      - confirmation
+      additionalProperties: false
+      properties:
+        confirmation:
+          type: string
+          enum:
+          - DELETE_MY_ACCOUNT
+  responses:
+    BadRequest:
+      description: Request hoặc tham số không hợp lệ.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            code: INVALID_RADIUS
+            message: Bán kính phải từ 100 đến 10000 mét.
+            requestId: 2c17262d-2e59-438a-9435-781c2e70e019
+            fieldErrors:
+            - field: radiusMeters
+              message: Ngoài khoảng hỗ trợ.
+    Unauthorized:
+      description: Thiếu hoặc sai token đăng nhập.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Place ID hoặc tài nguyên không tồn tại/không thuộc user.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Conflict:
+      description: Tài nguyên đã tồn tại hoặc Idempotency-Key dùng lại với nội dung khác.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    RateLimited:
+      description: 429 is reserved for FoodRadar caller rate limit; upstream Google quota maps to 503 PROVIDER_QUOTA_EXHAUSTED.
+      headers:
+        Retry-After:
+          description: Số giây nên đợi nếu có thể thử lại.
+          schema:
+            type: integer
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    ProviderError:
+      description: Provider trả lỗi không thể ánh xạ thành kết quả.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unavailable:
+      description: 503 provider disabled/quota/config or service unavailable. Code distinguishes PROVIDER_QUOTA_EXHAUSTED,
+        PROVIDER_CONFIGURATION_ERROR, PROVIDER_DISABLED.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    ProviderTimeout:
+      description: Provider vượt request deadline.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unprocessable:
+      description: Field combination or feature unsupported for source, before any external provider call.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            code: UNSUPPORTED_FILTER_FOR_SOURCE
+            message: Google Discovery does not support minRating in MVP.
+            requestId: 2c17262d-2e59-438a-9435-781c2e70e019
+            fieldErrors:
+            - field: minRating
+              message: Available only for OWNED_DATA
