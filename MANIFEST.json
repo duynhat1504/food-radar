@@ -1,74 +1,74 @@
 {
   "package": "FoodRadar current design documentation only",
-  "revision": "2026-11-12",
+  "revision": "2026-11-20",
   "adr_count": 9,
   "validation": "Historical 16/16 offline contract tests from 2026-11-09; not rerun in this review",
-  "notes": "All nine ADRs reviewed and remain Proposed pending owner acceptance. Live Google, licensing, billing, UI and implementation evidence remain open.",
+  "notes": "All nine ADRs were accepted by the project owner on 2026-11-20. Live Google, licensing, billing, UI and implementation evidence remain open release gates.",
   "files": [
     {
       "path": "README.md",
-      "size_bytes": 2835,
-      "sha256": "51c29e9928a3874986e0b56d1c8e07e83699e9513b87e698e0bd44ead4624584"
+      "size_bytes": 2622,
+      "sha256": "a49fdbd01b65d45f1982a0f7114937c20ce610d16a86fc6d99cd865b27d263f2"
     },
     {
       "path": "docs/adr/0001-modular-monolith.md",
-      "size_bytes": 8382,
-      "sha256": "74bc31ce655e16fe0c98cca6a9760a7cd66914d3a68ba0fb6840aab5ba9d23eb"
+      "size_bytes": 8325,
+      "sha256": "b3120b5b3a6c04d11694cdf6b1c2db6e3875e11a1065209eb61e24ac9428a179"
     },
     {
       "path": "docs/adr/0002-layered-and-ports-adapters.md",
-      "size_bytes": 6696,
-      "sha256": "2bf83e5ceebe24b82cc8dae7c1d1d6f65a655cdacf526ede733aa5e93f1cb5ce"
+      "size_bytes": 6681,
+      "sha256": "f215ea1654aaa8f8d6e94ad20eada6755d8d63ef01c3cce55aa8c7fbbb699798"
     },
     {
       "path": "docs/adr/0003-postgresql-primary-database.md",
-      "size_bytes": 7835,
-      "sha256": "fca0427e7f2695795b8b3de8c3da6dfe9f329d74cb5ae04e03674748aa1755b8"
+      "size_bytes": 7827,
+      "sha256": "13b8b06c551224bb6ffcfed4ba99deaa11e27e13a0405fb29b5d99803e775ba2"
     },
     {
       "path": "docs/adr/0004-google-places-provider.md",
-      "size_bytes": 9285,
-      "sha256": "4a64ede91b992a1f8263181e06b05eff8012dc4e25cd1a88eb2b399675ca6980"
+      "size_bytes": 9324,
+      "sha256": "4ad26805d6c700616dab4cce6685a1867222d4385b4d4722f88e3348b6b6c0ea"
     },
     {
       "path": "docs/adr/0005-recommendation-strategy.md",
-      "size_bytes": 7038,
-      "sha256": "e039a260ffda7daca51d3243dd30f16077d507ee89ef6f7cda94c492f341597f"
+      "size_bytes": 7098,
+      "sha256": "65000caecfba9d28ec913bbebd482587826b46c33d3d14bf8ccab102b2f3af1a"
     },
     {
       "path": "docs/adr/0006-sync-and-async-processing.md",
-      "size_bytes": 7375,
-      "sha256": "7a8ae1f43faf2078b9caf776694245f4df95a1b9c9468dacf803602f2ece388b"
+      "size_bytes": 7342,
+      "sha256": "e588fbe90864bb959ba06ecf037faac6decd2bbb2fc314ce95c80750842bb6c2"
     },
     {
       "path": "docs/adr/0007-redis-caching.md",
-      "size_bytes": 7017,
-      "sha256": "1996219bf2946c377add3eedd4a773b43ce6e7bd9bf8906ea41d70b9b14414c3"
+      "size_bytes": 7011,
+      "sha256": "ac6dd48ca559db9933285847d10a8f1db7d92b95adc8589ff707488f7ca3bb05"
     },
     {
       "path": "docs/adr/0008-rule-based-before-ai.md",
-      "size_bytes": 9995,
-      "sha256": "99caac879d662b9757f607cbb7a0f0fe02fd5843fb20b46e709b5cf0985d6cf4"
+      "size_bytes": 10071,
+      "sha256": "b67f641582d556c52b6b0b15201f6064a34266753d0e50afe56eadd309c54a41"
     },
     {
       "path": "docs/adr/0009-candidate-retrieval.md",
-      "size_bytes": 6572,
-      "sha256": "fce90bbd467a29801aec5cc62b5a6bf4934e8c396832070eccb06c7dba9bc67b"
+      "size_bytes": 6601,
+      "sha256": "0311c709564fc42a3a363be7802dccf1a65d092e71ba3d090107beefe35cc575"
     },
     {
       "path": "docs/adr/README.md",
-      "size_bytes": 10165,
-      "sha256": "047f4614ed638d67a896e2b53d1da2861eedc8143dd380e8ee62a6e6612f67fb"
+      "size_bytes": 9806,
+      "sha256": "f2ecfb9bf9b6ff3488e086bebf33c7ea6753deabee67fd7bd5b9c20b672e4417"
     },
     {
       "path": "docs/architecture-overview.md",
-      "size_bytes": 4345,
-      "sha256": "9255bf3dd85487821b441013947b72dcbbf9d3b0cbbd5c19b523dee7584002a5"
+      "size_bytes": 4325,
+      "sha256": "54c38e78b5c849d2182b8ac8142e474f9cfa358451b32c54f3a5ed5f93e4a795"
     },
     {
       "path": "docs/data-and-privacy.md",
-      "size_bytes": 4287,
-      "sha256": "3dc05c5854beb9b3915aabfde2f9fd7721f02902a69e61f58ae9b78e09df47e4"
+      "size_bytes": 4304,
+      "sha256": "767e0cda9be2eba6cb8b8b09bbf96d58a66a8824ca8ab4fa2e5d358bef206bb5"
     },
     {
       "path": "docs/google-places-setup-and-cost.md",
@@ -77,28 +77,28 @@
     },
     {
       "path": "docs/openapi.yaml",
-      "size_bytes": 27693,
-      "sha256": "f4c8aa4bd1e83b31075c686cb70db9bff129b3fc95958d36f8f457c5a459cea6"
+      "size_bytes": 27684,
+      "sha256": "3a584600e9a6c0302e1b6238f7fe05f424bf80b05647e17dec4618d6b0e38d3a"
     },
     {
       "path": "docs/phase0-validation.md",
-      "size_bytes": 1368,
-      "sha256": "634deecb46aec74c2d0b5b148bbdc93c9f0728c90f304708ccecb45a794ea141"
+      "size_bytes": 1439,
+      "sha256": "59c8f158b8cd8bb9df9fe79d74f98a904ebd9d86923acdec6855e5988ce99db6"
     },
     {
       "path": "docs/product-requirements.md",
-      "size_bytes": 12045,
-      "sha256": "20eef804ffbafe3d84c265fef34e3956aed524c127c753eb3bef662081d320c8"
+      "size_bytes": 12068,
+      "sha256": "26db0b708ce16763f90348b6bb8f791d79c55a56f86dda30daf87a877b2718ab"
     },
     {
       "path": "docs/recommendation-evaluation.md",
       "size_bytes": 2010,
-      "sha256": "9fbcde1595b5b02270a52593e4a495cd852f5a54bad906c077124cc380384137"
+      "sha256": "23b1a9f82fdc88049d79f02bfcbb7bfd5d299a1a0faedc0caebe93d88ee1b015"
     },
     {
       "path": "docs/release-readiness.md",
-      "size_bytes": 3555,
-      "sha256": "4df25860e4134c7997083b0406e291df7369b9968c7f19d19a3fc0835519f38f"
+      "size_bytes": 3309,
+      "sha256": "223809b64f9a6553b2d71920f297518ba2d8bec18fbd8700a01404fe8ada7bec"
     },
     {
       "path": "scripts/google-places-smoke.ps1",

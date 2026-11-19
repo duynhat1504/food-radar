@@ -1,6 +1,6 @@
-# FoodRadar – High-Level Architecture (Proposed v1.1)
+# FoodRadar – High-Level Architecture (Accepted v1.1)
 
-- **Cập nhật:** 2026-11-12; liên kết [SRS v1](product-requirements.md), [ADR list](adr/README.md), [OpenAPI](openapi.yaml).
+- **Cập nhật:** 2026-11-20; liên kết [SRS v1](product-requirements.md), [ADR list](adr/README.md), [OpenAPI](openapi.yaml).
 - **Nguyên tắc:** Modular Monolith; một Spring Boot deployable, package by feature, PostgreSQL + Flyway; ports/adapters tại boundary. Google provider không là nguồn cho custom ranking mặc định.
 
 ## 1. System context
@@ -72,6 +72,6 @@ Docker Compose for dev, CI (unit + contract + Testcontainers + OpenAPI/schema te
 
 ## 6. Gate status
 
-- Design and stub implementation: **GO** sau khi chủ dự án chấp thuận ADR; hiện các ADR vẫn Proposed.
+- Design and stub implementation: **GO**; các ADR đã được chủ dự án chấp thuận.
 - Live Google PoC: **PENDING** approved key/billing/quota; run bounded smoke script only.
 - Public beta and ranking derived from Google: **NO-GO** until provider/license approval and release checklist pass.

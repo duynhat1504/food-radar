@@ -1,7 +1,9 @@
 # ADR-005: Strategy Pattern cho Recommendation Engine, chỉ chạy trên nguồn dữ liệu đủ quyền
 
-- **Trạng thái:** Proposed; baseline offline đã được ghi nhận, chưa production ranking
-- **Rà soát:** 2026-11-12; đề xuất chấp thuận baseline cho dữ liệu owned/licensed, chưa bật public nếu thiếu dữ liệu thật
+- **Trạng thái:** Accepted; baseline offline, chưa production ranking
+- **Người quyết định:** Chủ dự án FoodRadar
+- **Ngày chấp thuận:** 2026-11-20
+- **Giới hạn:** Chỉ áp dụng cho dữ liệu owned/licensed; chưa bật public nếu thiếu dữ liệu quán thật hợp lệ.
 - **Ngày gốc:** 2026-11-04
 - **Phạm vi:** Scoring, search modes, explainability, provenance
 - **Liên quan:** [ADR-004](0004-google-places-provider.md), [ADR-008](0008-rule-based-before-ai.md), [ADR-009](0009-candidate-retrieval.md)

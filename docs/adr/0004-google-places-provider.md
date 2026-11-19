@@ -1,7 +1,9 @@
 # ADR-004: Google Places là nguồn discovery có kiểm soát, không phải kho dữ liệu FoodRadar
 
-- **Trạng thái:** Proposed; thiết kế chưa được chủ dự án chấp thuận
-- **Rà soát:** 2026-11-12; đề xuất chấp thuận thiết kế tích hợp có điều kiện; live smoke và licensing vẫn là release gates
+- **Trạng thái:** Accepted; thiết kế tích hợp có điều kiện
+- **Người quyết định:** Chủ dự án FoodRadar
+- **Ngày chấp thuận:** 2026-11-20
+- **Giới hạn:** Live smoke, licensing, billing, attribution và public release vẫn là release gates.
 - **Ngày gốc:** 2026-11-04
 - **Phạm vi:** Source boundary, data rights, presentation, cost, reliability
 - **Liên quan:** [ADR-002](0002-layered-and-ports-adapters.md), [ADR-003](0003-postgresql-primary-database.md), [ADR-005](0005-recommendation-strategy.md), [ADR-007](0007-redis-caching.md), [ADR-009](0009-candidate-retrieval.md)

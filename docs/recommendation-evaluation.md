@@ -1,6 +1,6 @@
-# FoodRadar – Recommendation evaluation plan (Proposed v1.1)
+# FoodRadar – Recommendation evaluation plan (Accepted v1.1)
 
-- **Cập nhật:** 2026-11-09. Xem [ADR-005](adr/0005-recommendation-strategy.md).
+- **Cập nhật:** 2026-11-20. Xem [ADR-005](adr/0005-recommendation-strategy.md).
 - **Scope:** Owned/licensed/synthetic dataset only. Không dùng Google Maps Content để train/test/validate model.
 
 ## 1. Evaluation targets

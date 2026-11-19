@@ -1,6 +1,6 @@
-# FoodRadar – Data model, privacy & provenance (Proposed v1.1)
+# FoodRadar – Data model, privacy & provenance (Accepted technical design v1.1)
 
-- **Cập nhật:** 2026-11-09; theo [ADR-003](adr/0003-postgresql-primary-database.md), [ADR-004](adr/0004-google-places-provider.md), [SRS](product-requirements.md).
+- **Cập nhật:** 2026-11-20; theo [ADR-003](adr/0003-postgresql-primary-database.md), [ADR-004](adr/0004-google-places-provider.md), [SRS](product-requirements.md).
 - **Trạng thái:** Technical design; chưa là Privacy Policy hay giấy phép Google.
 
 ## 1. Data ownership and retention

@@ -1,10 +1,11 @@
 # ADR-001: Chọn Modular Monolith thay vì Traditional Monolith và Microservices
 
-- **Trạng thái:** Proposed (Đề xuất; chưa được phê duyệt)
+- **Trạng thái:** Accepted
 - **Ngày:** 2026-11-04
 - **Phạm vi:** Kiến trúc hệ thống; MVP và kế hoạch mở rộng
 - **Người quyết định:** Chủ dự án FoodRadar
-- **Rà soát:** 2026-11-12; đề xuất chấp thuận kiến trúc MVP sau khi chủ dự án xác nhận
+- **Người quyết định:** Chủ dự án FoodRadar
+- **Ngày chấp thuận:** 2026-11-20
 - **Liên quan:** [ADR-002](0002-layered-and-ports-adapters.md), [ADR-006](0006-sync-and-async-processing.md)
 
 ## 1. Bối cảnh

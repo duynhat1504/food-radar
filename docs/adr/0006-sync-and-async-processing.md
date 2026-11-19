@@ -1,7 +1,8 @@
 # ADR-006: Đồng bộ cho luồng tìm kiếm; bất đồng bộ có chọn lọc, chưa dùng message broker trong MVP
 
-- **Trạng thái:** Proposed
-- **Rà soát:** 2026-11-12; đề xuất chấp thuận search đồng bộ, không triển khai background analytics trong MVP
+- **Trạng thái:** Accepted
+- **Người quyết định:** Chủ dự án FoodRadar
+- **Ngày chấp thuận:** 2026-11-20
 - **Ngày:** 2026-11-04
 - **Phạm vi:** Request processing, concurrency, background jobs, reliability
 - **Liên quan:** [ADR-001](0001-modular-monolith.md), [ADR-004](0004-google-places-provider.md), [ADR-007](0007-redis-caching.md)

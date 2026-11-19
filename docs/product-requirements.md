@@ -1,6 +1,6 @@
-# FoodRadar – Software Requirements Specification (SRS v1.0 – Proposed)
+# FoodRadar – Software Requirements Specification (SRS v1.0 – Accepted)
 
-- **Cập nhật:** 2026-11-12 · **Trạng thái:** Proposed; chưa chấp thuận công khai
+- **Cập nhật:** 2026-11-20 · **Trạng thái:** Accepted; chủ dự án phê duyệt phạm vi thiết kế MVP
 - **Nguồn sự thật cho API:** [OpenAPI](openapi.yaml)
 - **Kiến trúc:** [ADR-001–009](adr/README.md)
 - **Phạm vi:** HCMC pilot, web-first, guest discovery; identity & favorites; ranking có quyền dữ liệu rõ ràng.

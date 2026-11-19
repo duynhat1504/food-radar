@@ -1,7 +1,9 @@
 # ADR-008: Rule-based Recommendation trên dữ liệu có quyền; AI parser sau MVP
 
-- **Trạng thái:** Proposed
-- **Rà soát:** 2026-11-12; đề xuất chấp thuận baseline owned-data sau khi chủ dự án xác nhận phạm vi AI sau MVP
+- **Trạng thái:** Accepted
+- **Người quyết định:** Chủ dự án FoodRadar
+- **Ngày chấp thuận:** 2026-11-20
+- **Giới hạn:** AI parser thuộc giai đoạn sau MVP và cần ADR/API contract riêng trước khi bật.
 - **Ngày:** 2026-11-04
 - **Phạm vi:** Recommendation quality, model roadmap, evaluation, privacy
 - **Liên quan:** [ADR-004](0004-google-places-provider.md), [ADR-005](0005-recommendation-strategy.md), [ADR-006](0006-sync-and-async-processing.md)

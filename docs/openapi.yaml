@@ -1,8 +1,8 @@
 openapi: 3.0.3
 info:
   title: FoodRadar API
-  version: 1.0.0-proposed
-  description: FoodRadar MVP API v1 Proposed 2026-11-12. GOOGLE_DISCOVERY preserves Google results; OWNED_DATA permits scoring
+  version: 1.0.0
+  description: FoodRadar MVP API v1 Accepted 2026-11-20. GOOGLE_DISCOVERY preserves Google results; OWNED_DATA permits scoring
     only on legitimately owned/licensed data. No implementation or licensing approval is claimed.
 servers:
 - url: http://localhost:8081

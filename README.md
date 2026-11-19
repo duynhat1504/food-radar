@@ -15,7 +15,7 @@
 
 ## Trạng thái tài liệu và triển khai
 
-- **Tài liệu thiết kế:** Đã rà soát từng ADR và đồng bộ các điểm về quyền dữ liệu, phạm vi AI, một provider search call và giới hạn bán kính. [Danh mục ADR](docs/adr/README.md) ghi đề xuất xử lý từng quyết định. Cả 9 ADR vẫn `Proposed` vì chưa có phê duyệt chính thức của chủ dự án.
+- **Tài liệu thiết kế:** Chủ dự án đã phê duyệt toàn bộ 9 ADR ngày 2026-11-20. [Danh mục ADR](docs/adr/README.md) ghi phạm vi và giới hạn của từng quyết định.
 - **Đã kiểm tra offline:** OpenAPI/schema và các quy tắc chính bằng kiểm thử synthetic. Kiểm tra này không thay thế integration test của ứng dụng Spring Boot.
 - **Chưa hoàn tất:** Google Places live smoke, cấu hình billing/quota trên Google Cloud, xác nhận licensing/use case, UI attribution, privacy/terms, load test thực tế và production release. Không có key hoặc dữ liệu thực trong gói.
 - **Phân tách chính:** `GOOGLE_DISCOVERY` giữ thứ tự từ Google, không tự tính score hoặc hậu lọc khoảng cách. `OWNED_DATA` chạy strict radius và recommendation trên dữ liệu do FoodRadar sở hữu/có giấy phép. AI parser tiếng Việt được đề xuất cho sau MVP, cần ADR/API contract riêng trước khi bật.
@@ -31,4 +31,4 @@ python -m unittest discover -s tests -p 'validate_contract.py' -v
 
 Trên Windows PowerShell, script `scripts/google-places-smoke.ps1` chỉ chạy khi đã có Google Cloud project, key được hạn chế, billing/quota và sự chấp thuận phát sinh phí. Đọc [hướng dẫn](docs/google-places-setup-and-cost.md) trước. Không commit API key.
 
-**Lưu ý:** Bộ hồ sơ đã được sửa để trình chủ dự án quyết định, **không** có nghĩa là mọi kiểm chứng bên ngoài đã hoàn tất hay phần mềm đã được triển khai.
+**Lưu ý:** Các quyết định thiết kế đã được phê duyệt, nhưng kiểm chứng bên ngoài và phần mềm triển khai vẫn chưa hoàn tất.

@@ -1,7 +1,8 @@
 # ADR-002: Layered Architecture trong module; Ports & Adapters ở ranh giới bên ngoài
 
-- **Trạng thái:** Proposed
-- **Rà soát:** 2026-11-12; đề xuất chấp thuận ranh giới module sau khi chủ dự án xác nhận
+- **Trạng thái:** Accepted
+- **Người quyết định:** Chủ dự án FoodRadar
+- **Ngày chấp thuận:** 2026-11-20
 - **Ngày:** 2026-11-04
 - **Phạm vi:** Kiến trúc mã nguồn, dependency và testability
 - **Liên quan:** [ADR-001](0001-modular-monolith.md), [ADR-004](0004-google-places-provider.md), [ADR-005](0005-recommendation-strategy.md)

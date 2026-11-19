@@ -17,4 +17,4 @@
 
 ## Source preservation
 
-This package includes only the latest revised individual ADRs and current supporting documents. Old ZIP files and review snapshots are excluded. ADRs remain Proposed pending owner acceptance.
+This package includes only the latest revised individual ADRs and current supporting documents. Old ZIP files and review snapshots are excluded. All nine ADRs were accepted by the project owner on 2026-11-20; this does not change the validation boundaries above.

@@ -1,7 +1,9 @@
 # ADR-009: Routing Nearby/Text và phạm vi cam kết tìm kiếm theo nguồn
 
-- **Trạng thái:** Proposed; thiết kế chưa được chủ dự án chấp thuận
-- **Rà soát:** 2026-11-12; đề xuất chấp thuận routing và metadata có điều kiện, không phải xác nhận coverage thực tế
+- **Trạng thái:** Accepted; routing và metadata có điều kiện
+- **Người quyết định:** Chủ dự án FoodRadar
+- **Ngày chấp thuận:** 2026-11-20
+- **Giới hạn:** Không xác nhận coverage thực tế; Text Search vẫn là radius bias.
 - **Ngày gốc:** 2026-11-05
 - **Phạm vi:** Candidate retrieval, radius, coverage semantics
 - **Liên quan:** [ADR-004](0004-google-places-provider.md), [ADR-005](0005-recommendation-strategy.md), [SRS](../product-requirements.md)

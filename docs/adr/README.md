@@ -2,8 +2,8 @@
 
 **Dự án:** FoodRadar – Location-Based Restaurant Discovery & Recommendation  
 **Mục tiêu:** MVP cho CV Backend Java Intern, có hướng phát triển đồ án tốt nghiệp và sản phẩm thực tế  
-**Ngày khởi tạo:** 2026-11-04; rà soát nội dung 2026-11-12  
-**Trạng thái bộ ADR:** Dự thảo để chủ dự án xem xét; chưa phải quyết định đã phê duyệt.
+**Ngày khởi tạo:** 2026-11-04; chấp thuận 2026-11-20  
+**Trạng thái bộ ADR:** Tất cả 9 quyết định đã được chủ dự án phê duyệt.
 
 ## Tại sao có ADR?
 
@@ -13,15 +13,15 @@ ADR ghi lại **lý do** quyết định kỹ thuật, không chỉ 'đã dùng 
 
 | Mã | Quyết định | Ưu tiên | Trạng thái |
 |---|---|---|---|
-| [ADR-001](0001-modular-monolith.md) | Modular Monolith thay vì microservices | MVP | Proposed |
-| [ADR-002](0002-layered-and-ports-adapters.md) | Layered + Ports & Adapters chọn lọc | MVP | Proposed |
-| [ADR-003](0003-postgresql-primary-database.md) | PostgreSQL làm database chính | MVP | Proposed |
-| [ADR-004](0004-google-places-provider.md) | Google Places (New) là external provider | MVP | Proposed |
-| [ADR-005](0005-recommendation-strategy.md) | Strategy Pattern cho ranking | MVP khi >=2 modes | Proposed |
-| [ADR-006](0006-sync-and-async-processing.md) | Sync search, async có chọn lọc | MVP | Proposed |
-| [ADR-007](0007-redis-caching.md) | Không dùng Redis trong MVP; cache eligibility cho giai đoạn sau | MVP / khi có nhu cầu | Proposed |
-| [ADR-008](0008-rule-based-before-ai.md) | Rule-based trên owned data; AI parse sau MVP | MVP và giai đoạn sau | Proposed |
-| [ADR-009](0009-candidate-retrieval.md) | Chọn Nearby Search hoặc Text Search theo ý định | MVP | Proposed |
+| [ADR-001](0001-modular-monolith.md) | Modular Monolith thay vì microservices | MVP | Accepted |
+| [ADR-002](0002-layered-and-ports-adapters.md) | Layered + Ports & Adapters chọn lọc | MVP | Accepted |
+| [ADR-003](0003-postgresql-primary-database.md) | PostgreSQL làm database chính | MVP | Accepted |
+| [ADR-004](0004-google-places-provider.md) | Google Places (New) là external provider | MVP | Accepted, có release gates |
+| [ADR-005](0005-recommendation-strategy.md) | Strategy Pattern cho ranking | MVP khi >=2 modes | Accepted, owned/licensed data |
+| [ADR-006](0006-sync-and-async-processing.md) | Sync search, async có chọn lọc | MVP | Accepted |
+| [ADR-007](0007-redis-caching.md) | Không dùng Redis trong MVP; cache eligibility cho giai đoạn sau | MVP / khi có nhu cầu | Accepted |
+| [ADR-008](0008-rule-based-before-ai.md) | Rule-based trên owned data; AI parse sau MVP | MVP và giai đoạn sau | Accepted |
+| [ADR-009](0009-candidate-retrieval.md) | Chọn Nearby Search hoặc Text Search theo ý định | MVP | Accepted, có release gates |
 
 Tài liệu liên quan: [Sơ đồ kiến trúc](../architecture-overview.md) · [SRS dự thảo](../product-requirements.md) · [OpenAPI](../openapi.yaml) · [Dữ liệu và quyền riêng tư](../data-and-privacy.md) · [Kế hoạch đánh giá](../recommendation-evaluation.md).
 
@@ -37,21 +37,21 @@ Không sửa âm thầm rationale của ADR đã Accepted; nếu thay đổi quy
 
 **Phê duyệt thiết kế khác với hoàn thành triển khai/phát hành.** Khi chủ dự án quyết định, cập nhật `Trạng thái`, `Người quyết định`, `Ngày chấp thuận`, phạm vi và điều kiện còn mở trong từng ADR; ghi cùng quyết định ở bảng này. Không tự đổi `Accepted` chỉ vì tài liệu đã được sửa, test offline đã qua hoặc có kết quả live smoke. [Release readiness](../release-readiness.md) theo dõi bằng chứng triển khai và điều kiện public riêng.
 
-## Đề xuất xử lý từng ADR sau rà soát 2026-11-12
+## Quyết định phê duyệt 2026-11-20
 
-| ADR | Đề xuất để chủ dự án quyết định | Điều kiện/giới hạn cần ghi nhận |
+| ADR | Quyết định đã phê duyệt | Điều kiện/giới hạn được ghi nhận |
 |---|---|---|
-| 001 | Chấp thuận modular monolith | `interaction` ngoài MVP; boundary test là việc triển khai |
-| 002 | Chấp thuận layered + ports chọn lọc | Port Google và owned riêng; không đưa Google DTO vào ranking |
-| 003 | Chấp thuận PostgreSQL + Flyway | Schema MVP chỉ có identity/profile/favorites; PostGIS khi có owned data |
-| 004 | Chấp thuận thiết kế Google Discovery có điều kiện | Không đồng nghĩa licensing, billing, attribution hay public release đã đạt |
-| 005 | Chấp thuận baseline ranking trên owned/licensed data | Không bật public recommendation quán thật khi chưa có dataset hợp lệ |
-| 006 | Chấp thuận search đồng bộ, không tự retry search | Background analytics ngoài MVP |
-| 007 | Chấp thuận quyết định không dùng Redis trong MVP | Bổ sung Redis sau này cần use case và số liệu riêng |
-| 008 | Chấp thuận sau khi xác nhận AI parser thuộc giai đoạn sau MVP | Google chỉ provider order; ví dụ score thuộc owned demo |
-| 009 | Chấp thuận routing Nearby/Text và metadata | Text là bias, không bảo đảm strict radius hay coverage đầy đủ |
+| 001 | Modular monolith | `interaction` ngoài MVP; boundary test là việc triển khai |
+| 002 | Layered + ports chọn lọc | Port Google và owned riêng; không đưa Google DTO vào ranking |
+| 003 | PostgreSQL + Flyway | Schema MVP chỉ có identity/profile/favorites; PostGIS khi có owned data |
+| 004 | Google Discovery có điều kiện | Không đồng nghĩa licensing, billing, attribution hay public release đã đạt |
+| 005 | Baseline ranking trên owned/licensed data | Không bật public recommendation quán thật khi chưa có dataset hợp lệ |
+| 006 | Search đồng bộ, không tự retry search | Background analytics ngoài MVP |
+| 007 | Không dùng Redis trong MVP | Bổ sung Redis sau này cần use case và số liệu riêng |
+| 008 | Rule-based owned data; AI parser sau MVP | Google chỉ provider order; ví dụ score thuộc owned demo |
+| 009 | Routing Nearby/Text và metadata | Text là bias, không bảo đảm strict radius hay coverage đầy đủ |
 
-Các quyết định sản phẩm còn cần chủ dự án chốt: có dùng dataset quán thật đủ quyền để cung cấp recommendation public hay chỉ demo offline; UI Google hiển thị danh sách hay trên Google Map; ngân sách/quota và mục tiêu phát hành. Trước khi có những quyết định này, ADR vẫn có thể được chấp thuận **theo phạm vi thiết kế ghi rõ**, còn release gate giữ trạng thái mở.
+Các quyết định sản phẩm còn mở: có dùng dataset quán thật đủ quyền để cung cấp recommendation public hay chỉ demo offline; UI Google hiển thị danh sách hay trên Google Map; ngân sách/quota và mục tiêu phát hành. Các release gate tương ứng vẫn mở.
 
 ## Những nguyên tắc đã phản ánh trong SRS v1
 
@@ -99,6 +99,6 @@ Các quyết định sản phẩm còn cần chủ dự án chốt: có dùng da
 **Tuyên bố:** Đây là tài liệu kỹ thuật phục vụ quyết định thiết kế, không phải tư vấn pháp lý. Cần kiểm tra điều khoản/API, giá và giới hạn tại thời điểm triển khai.
 
 
-## Đồng bộ Phase 0 và rà soát 2026-11-12
+## Đồng bộ Phase 0 và phê duyệt 2026-11-20
 
-Mọi ADR đã được rà soát theo hai luồng `GOOGLE_DISCOVERY` và `OWNED_DATA`. Chính sách nguồn chuẩn là ADR-004 cùng [SRS](../product-requirements.md). Không có ADR nào tự cấp quyền score/cache Google Content. Tất cả vẫn `Proposed` chờ quyết định của chủ dự án.
+Mọi ADR đã được rà soát theo hai luồng `GOOGLE_DISCOVERY` và `OWNED_DATA`, rồi được chủ dự án phê duyệt. Chính sách nguồn chuẩn là ADR-004 cùng [SRS](../product-requirements.md). Không có ADR nào tự cấp quyền score/cache Google Content.

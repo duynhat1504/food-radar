@@ -1,7 +1,8 @@
 # ADR-003: PostgreSQL là database chính; chưa chọn MongoDB làm primary store
 
-- **Trạng thái:** Proposed
-- **Rà soát:** 2026-11-12; đề xuất chấp thuận PostgreSQL/Flyway sau khi thu gọn schema MVP
+- **Trạng thái:** Accepted
+- **Người quyết định:** Chủ dự án FoodRadar
+- **Ngày chấp thuận:** 2026-11-20
 - **Ngày:** 2026-11-04
 - **Phạm vi:** Data model, persistence, geospatial roadmap
 - **Liên quan:** [ADR-004](0004-google-places-provider.md), [ADR-007](0007-redis-caching.md)

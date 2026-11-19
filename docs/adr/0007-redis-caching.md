@@ -1,7 +1,8 @@
 # ADR-007: Caching có điều kiện; Redis chỉ cho dữ liệu được quyền cache và workload có lợi ích đo được
 
-- **Trạng thái:** Proposed
-- **Rà soát:** 2026-11-12; đề xuất chấp thuận quyết định không dùng Redis trong MVP
+- **Trạng thái:** Accepted
+- **Người quyết định:** Chủ dự án FoodRadar
+- **Ngày chấp thuận:** 2026-11-20
 - **Ngày:** 2026-11-04
 - **Phạm vi:** Caching, data ownership, quota control, performance
 - **Liên quan:** [ADR-003](0003-postgresql-primary-database.md), [ADR-004](0004-google-places-provider.md), [ADR-006](0006-sync-and-async-processing.md)
